@@ -1,4 +1,4 @@
-# 📊 MizMetrics — React Dashboard UI
+# 📊 MovieMetrics — React Dashboard UI
 
 > A production-quality analytics dashboard built with **React (CDN)**, **Chart.js**, and vanilla CSS — no build tools required. Demonstrates component thinking, state management, responsive layout, and data visualization.
 
@@ -85,4 +85,3 @@ miz-react-dashboard/
 
 ---
 
-*Part of the Mirza Causevic GitHub portfolio — showcasing full-stack technical depth.*
