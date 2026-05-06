@@ -37,7 +37,7 @@
 
 ```bash
 # Clone
-git clone https://github.com/fknmiz/miz-react-dashboard.git
+git clone https://github.com/mizcausevic-dev/miz-react-dashboard.git
 cd miz-react-dashboard
 
 # Open — no build step needed
@@ -59,7 +59,7 @@ open dashboard-ui.html
 ## ☁️ Deploy to Vercel
 
 1. Go to [vercel.com/new](https://vercel.com/new)
-2. Import `fknmiz/miz-react-dashboard`
+2. Import `mizcausevic-dev/miz-react-dashboard`
 3. Framework: **Other**
 4. Root directory: `/`
 5. Hit **Deploy** — live in ~60 seconds
@@ -80,7 +80,7 @@ miz-react-dashboard/
 
 **Mirza Causevic** — Director of Tech, Web Engineering & DevOps
 
-[![GitHub](https://img.shields.io/badge/GitHub-fknmiz-181717?style=flat-square&logo=github)](https://github.com/fknmiz)
+[![GitHub](https://img.shields.io/badge/GitHub-mizcausevic--dev-181717?style=flat-square&logo=github)](https://github.com/mizcausevic-dev)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Mirza%20Causevic-0077B5?style=flat-square&logo=linkedin)](https://linkedin.com/in/mirzacausevic)
 
 ---
