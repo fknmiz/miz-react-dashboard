@@ -1,451 +1,425 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Miz React Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root,[data-theme="light"]{
-  --bg:#f7f6f2;--surface:#ffffff;--surface2:#f3f0ec;--border:#dcd9d5;
-  --text:#28251d;--muted:#7a7974;--faint:#bab9b4;
-  --primary:#01696f;--primary-hover:#0c4e54;--primary-glow:rgba(1,105,111,0.15);
-  --success:#437a22;--warning:#da7101;--error:#a12c7b;--info:#006494;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.05);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.1);--radius:0.75rem;--transition:180ms cubic-bezier(0.16,1,0.3,1);
-}
-[data-theme="dark"]{
-  --bg:#0f0f11;--surface:#16161a;--surface2:#1c1c22;--border:#2a2a33;
-  --text:#e8e8f0;--muted:#888896;--faint:#44444e;
-  --primary:#4f98a3;--primary-hover:#60b0bc;--primary-glow:rgba(79,152,163,0.15);
-  --success:#6daa45;--warning:#fdab43;--error:#d163a7;--info:#5591c7;
-  --shadow:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.5);
-}
-html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;font-size:1rem;color:var(--text);background:var(--bg);min-height:100dvh;line-height:1.6}
-button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
-img,svg{display:block;max-width:100%}
-.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:auto 1fr;min-height:100dvh}
-@media(max-width:768px){.app{grid-template-columns:1fr}}
-.sidebar{grid-row:1/-1;background:var(--surface);border-right:1px solid var(--border);padding:1.5rem 1rem;display:flex;flex-direction:column;gap:0.5rem;position:sticky;top:0;height:100dvh;overflow-y:auto}
-@media(max-width:768px){.sidebar{display:none}}
-.sidebar-logo{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;margin-bottom:1rem}
-.logo-mark{width:32px;height:32px;flex-shrink:0}
-.logo-text{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-0.02em}
-.logo-text span{color:var(--primary)}
-.nav-section{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--faint);padding:0.75rem 0.75rem 0.25rem;margin-top:0.5rem}
-.nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.6rem 0.75rem;border-radius:0.5rem;color:var(--muted);font-size:0.875rem;font-weight:500;cursor:pointer;transition:all var(--transition);user-select:none}
-.nav-item:hover{background:var(--surface2);color:var(--text)}
-.nav-item.active{background:var(--primary-glow);color:var(--primary);font-weight:600}
-.nav-item svg{flex-shrink:0;opacity:0.8}
-.nav-item.active svg{opacity:1}
-.sidebar-bottom{margin-top:auto;padding-top:1rem;border-top:1px solid var(--border)}
-.header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;height:60px;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:0;z-index:10}
-.header-left{display:flex;align-items:center;gap:1rem}
-.mobile-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;display:none;align-items:center;gap:0.5rem}
-@media(max-width:768px){.mobile-logo{display:flex}}
-.search-bar{display:flex;align-items:center;gap:0.5rem;background:var(--surface2);border:1px solid var(--border);border-radius:0.5rem;padding:0.4rem 0.75rem;font-size:0.875rem;color:var(--muted);width:220px;transition:all var(--transition)}
-.search-bar:focus-within{border-color:var(--primary);width:260px;color:var(--text)}
-.search-bar input{background:none;border:none;outline:none;font:inherit;color:inherit;width:100%}
-.search-bar input::placeholder{color:var(--faint)}
-@media(max-width:480px){.search-bar{width:160px}.search-bar:focus-within{width:180px}}
-.header-right{display:flex;align-items:center;gap:0.5rem}
-.icon-btn{width:36px;height:36px;border-radius:0.5rem;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all var(--transition)}
-.icon-btn:hover{background:var(--surface2);color:var(--text)}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;font-family:'Space Grotesk',sans-serif;cursor:pointer;flex-shrink:0}
-.badge{position:relative}
-.badge::after{content:'';position:absolute;top:4px;right:4px;width:7px;height:7px;background:var(--error);border-radius:50%;border:1.5px solid var(--surface)}
-.main{padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem;min-width:0}
-@media(max-width:480px){.main{padding:1rem;gap:1rem}}
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.page-title{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em}
-.page-subtitle{font-size:0.85rem;color:var(--muted);margin-top:0.2rem}
-.btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border-radius:0.5rem;font-size:0.875rem;font-weight:600;transition:all var(--transition);cursor:pointer}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-hover);box-shadow:0 4px 12px var(--primary-glow)}
-.btn-ghost{border:1px solid var(--border);color:var(--muted)}
-.btn-ghost:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-glow)}
-.date-tabs{display:flex;gap:0.25rem;background:var(--surface2);padding:0.25rem;border-radius:0.5rem;border:1px solid var(--border)}
-.date-tab{padding:0.3rem 0.75rem;border-radius:0.375rem;font-size:0.8rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all var(--transition)}
-.date-tab.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
-@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:480px){.kpi-grid{grid-template-columns:1fr}}
-.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;display:flex;flex-direction:column;gap:0.75rem;box-shadow:var(--shadow);transition:box-shadow var(--transition)}
-.kpi-card:hover{box-shadow:var(--shadow-lg)}
-.kpi-header{display:flex;align-items:center;justify-content:space-between}
-.kpi-label{font-size:0.8rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
-.kpi-icon{width:32px;height:32px;border-radius:0.5rem;display:flex;align-items:center;justify-content:center}
-.kpi-value{font-family:'Space Grotesk',sans-serif;font-size:1.75rem;font-weight:700;letter-spacing:-0.03em;line-height:1}
-.kpi-footer{display:flex;align-items:center;gap:0.4rem;font-size:0.78rem}
-.trend{display:inline-flex;align-items:center;gap:0.2rem;font-weight:600;padding:0.15rem 0.4rem;border-radius:0.3rem}
-.trend.up{color:var(--success);background:rgba(67,122,34,0.12)}
-.trend.down{color:var(--error);background:rgba(161,44,123,0.12)}
-[data-theme="dark"] .trend.up{background:rgba(109,170,69,0.15)}
-[data-theme="dark"] .trend.down{background:rgba(209,99,167,0.15)}
-.trend-label{color:var(--faint)}
-.charts-grid{display:grid;grid-template-columns:2fr 1fr;gap:1rem}
-@media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;box-shadow:var(--shadow)}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.card-title{font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:700}
-.card-subtitle{font-size:0.78rem;color:var(--muted);margin-top:0.1rem}
-.chart-wrap{position:relative;height:220px}
-.donut-legend{display:flex;flex-direction:column;gap:0.65rem;margin-top:1rem}
-.legend-item{display:flex;align-items:center;justify-content:space-between;font-size:0.82rem}
-.legend-left{display:flex;align-items:center;gap:0.5rem;color:var(--muted)}
-.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.legend-val{font-weight:600;color:var(--text);font-family:'Space Grotesk',sans-serif}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:0.85rem}
-thead th{text-align:left;padding:0.6rem 0.75rem;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--faint);border-bottom:1px solid var(--border);white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--border);transition:background var(--transition)}
-tbody tr:hover{background:var(--surface2)}
-tbody tr:last-child{border-bottom:none}
-tbody td{padding:0.75rem;color:var(--text);vertical-align:middle}
-.td-muted{color:var(--muted)}
-.status-pill{display:inline-flex;align-items:center;gap:0.3rem;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:600}
-.pill-success{background:rgba(67,122,34,0.12);color:var(--success)}
-.pill-warning{background:rgba(218,113,1,0.12);color:var(--warning)}
-.pill-info{background:rgba(0,100,148,0.12);color:var(--info)}
-[data-theme="dark"] .pill-success{background:rgba(109,170,69,0.15)}
-[data-theme="dark"] .pill-warning{background:rgba(253,171,67,0.15)}
-[data-theme="dark"] .pill-info{background:rgba(85,145,199,0.15)}
-.user-cell{display:flex;align-items:center;gap:0.6rem}
-.user-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:#fff;flex-shrink:0}
-.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-@media(max-width:768px){.bottom-grid{grid-template-columns:1fr}}
-.activity-list{display:flex;flex-direction:column;gap:0}
-.activity-item{display:flex;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
-.activity-item:last-child{border-bottom:none}
-.activity-icon{width:32px;height:32px;border-radius:0.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.1rem}
-.activity-body{flex:1;min-width:0}
-.activity-text{font-size:0.84rem;line-height:1.4;color:var(--text)}
-.activity-text strong{font-weight:600}
-.activity-time{font-size:0.75rem;color:var(--faint);margin-top:0.15rem}
-.top-pages{display:flex;flex-direction:column;gap:0.65rem}
-.page-row{display:flex;align-items:center;gap:0.75rem;font-size:0.84rem}
-.page-rank{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:0.75rem;color:var(--faint);width:16px;text-align:right;flex-shrink:0}
-.page-info{flex:1;min-width:0}
-.page-name{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.page-url{font-size:0.73rem;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.page-bar-wrap{width:80px;flex-shrink:0}
-.page-bar-bg{height:4px;background:var(--surface2);border-radius:9999px;overflow:hidden}
-.page-bar-fill{height:100%;background:var(--primary);border-radius:9999px;transition:width 1s ease}
-.page-visits{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.8rem;color:var(--text);width:36px;text-align:right;flex-shrink:0}
-.tooltip-wrap{position:relative;display:inline-flex}
-.tooltip-wrap:hover .tooltip{opacity:1;transform:translateY(0)}
-.tooltip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(4px);background:var(--text);color:var(--bg);font-size:0.72rem;padding:0.3rem 0.5rem;border-radius:0.3rem;white-space:nowrap;pointer-events:none;opacity:0;transition:all 150ms ease;z-index:100}
-:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
-::selection{background:rgba(79,152,163,0.25);color:var(--text)}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miz React Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font-body: 'Inter', sans-serif;
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+      --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+      --radius-sm: 0.375rem; --radius-md: 0.5rem;
+      --radius-lg: 0.75rem; --radius-xl: 1rem;
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    :root, [data-theme="light"] {
+      --bg: #f7f6f2; --surface: #f9f8f5; --surface-2: #ffffff;
+      --surface-offset: #f0ede8; --border: rgba(40,37,29,0.1);
+      --text: #28251d; --text-muted: #7a7974; --text-faint: #bab9b4;
+      --primary: #01696f; --primary-hover: #0c4e54;
+      --primary-hi: #cedcd8;
+      --shadow-sm: 0 1px 3px rgba(40,37,29,0.07);
+      --shadow-md: 0 4px 16px rgba(40,37,29,0.09);
+      --success: #437a22; --warning: #d19900; --error: #a12c7b;
+    }
+    [data-theme="dark"] {
+      --bg: #121211; --surface: #1c1b19; --surface-2: #232220;
+      --surface-offset: #1d1c1a; --border: rgba(255,255,255,0.08);
+      --text: #cdccca; --text-muted: #797876; --text-faint: #5a5957;
+      --primary: #4f98a3; --primary-hover: #227f8b;
+      --primary-hi: #313b3b;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.35);
+      --success: #6daa45; --warning: #e8af34; --error: #d163a7;
+    }
+    html { font-family: var(--font-body); font-size: var(--text-base); color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+    body { min-height: 100dvh; display: flex; }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .sidebar {
+      width: 240px; min-height: 100dvh; background: var(--surface);
+      border-right: 1px solid var(--border); display: flex;
+      flex-direction: column; padding: var(--space-6) 0;
+      position: sticky; top: 0; height: 100dvh; overflow-y: auto;
+      transition: width var(--transition); flex-shrink: 0;
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: 0 var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-mark {
+      width: 32px; height: 32px; background: var(--primary);
+      border-radius: var(--radius-md); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0;
+    }
+    .logo-mark svg { color: white; }
+    .logo-name { font-weight: 700; font-size: var(--text-sm); letter-spacing: -0.01em; }
+    .logo-sub { font-size: var(--text-xs); color: var(--text-muted); }
+    .nav-section { padding: var(--space-5) 0 0; }
+    .nav-label {
+      font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--text-faint);
+      padding: 0 var(--space-5) var(--space-2);
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-2) var(--space-5); font-size: var(--text-sm);
+      color: var(--text-muted); border-radius: 0;
+      transition: color var(--transition), background var(--transition);
+      position: relative; cursor: pointer;
+    }
+    .nav-item:hover { color: var(--text); background: var(--surface-offset); }
+    .nav-item.active {
+      color: var(--primary); background: var(--primary-hi); font-weight: 500;
+    }
+    .nav-item.active::before {
+      content: ''; position: absolute; left: 0; top: 4px; bottom: 4px;
+      width: 3px; background: var(--primary); border-radius: 0 2px 2px 0;
+    }
+    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .badge {
+      margin-left: auto; background: var(--primary); color: white;
+      font-size: 10px; font-weight: 600; padding: 1px 6px;
+      border-radius: 99px; line-height: 16px;
+    }
+    .sidebar-footer {
+      margin-top: auto; padding: var(--space-5);
+      border-top: 1px solid var(--border);
+    }
+    .user-row { display: flex; align-items: center; gap: var(--space-3); }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 99px;
+      background: var(--primary); display: flex; align-items: center;
+      justify-content: center; color: white; font-size: var(--text-xs);
+      font-weight: 700; flex-shrink: 0;
+    }
+    .user-name { font-size: var(--text-sm); font-weight: 500; }
+    .user-role { font-size: var(--text-xs); color: var(--text-muted); }
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .topbar {
+      height: 56px; background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: 0 var(--space-6); position: sticky; top: 0; z-index: 10;
+    }
+    .mobile-menu-btn { display: none; }
+    .search-wrap {
+      flex: 1; max-width: 320px;
+      display: flex; align-items: center; gap: var(--space-2);
+      background: var(--surface-offset); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: var(--space-2) var(--space-3);
+    }
+    .search-wrap svg { color: var(--text-muted); width: 14px; height: 14px; flex-shrink: 0; }
+    .search-wrap input {
+      border: none; background: none; outline: none; font-size: var(--text-sm);
+      color: var(--text); width: 100%;
+    }
+    .search-wrap input::placeholder { color: var(--text-faint); }
+    .topbar-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); transition: color var(--transition), background var(--transition);
+    }
+    .icon-btn:hover { color: var(--text); background: var(--surface-offset); }
+    .icon-btn svg { width: 16px; height: 16px; }
+    .notif-wrap { position: relative; }
+    .notif-dot {
+      position: absolute; top: 6px; right: 6px; width: 7px; height: 7px;
+      background: var(--error); border-radius: 99px;
+      border: 1.5px solid var(--surface);
+    }
+    .content { padding: var(--space-6); flex: 1; }
+    .page-header { margin-bottom: var(--space-6); }
+    .page-title { font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.02em; }
+    .page-sub { font-size: var(--text-sm); color: var(--text-muted); margin-top: var(--space-1); }
+    .kpi-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px,100%), 1fr));
+      gap: var(--space-4); margin-bottom: var(--space-6);
+    }
+    .kpi-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    .kpi-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
+    .kpi-label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+    .kpi-icon {
+      width: 32px; height: 32px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .kpi-icon svg { width: 15px; height: 15px; }
+    .kpi-icon.teal { background: rgba(1,105,111,0.12); color: var(--primary); }
+    .kpi-icon.green { background: rgba(67,122,34,0.12); color: var(--success); }
+    .kpi-icon.blue { background: rgba(0,100,148,0.12); color: #006494; }
+    .kpi-icon.gold { background: rgba(209,153,0,0.12); color: var(--warning); }
+    [data-theme="dark"] .kpi-icon.blue { color: #5591c7; }
+    .kpi-value {
+      font-size: clamp(1.6rem, 2vw, 2.2rem); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1; margin-bottom: var(--space-2);
+    }
+    .kpi-trend { display: flex; align-items: center; gap: var(--space-1); font-size: var(--text-xs); font-weight: 500; }
+    .trend-up { color: var(--success); }
+    .trend-down { color: var(--error); }
+    .kpi-trend svg { width: 12px; height: 12px; }
+    .charts-row {
+      display: grid; grid-template-columns: 2fr 1fr;
+      gap: var(--space-4); margin-bottom: var(--space-6);
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-5); }
+    .card-title { font-size: var(--text-sm); font-weight: 600; }
+    .card-sub { font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px; }
+    .chart-wrap { position: relative; height: 220px; }
+    .donut-wrap { position: relative; height: 200px; display: flex; align-items: center; justify-content: center; }
+    .legend { margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+    .legend-item { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 99px; flex-shrink: 0; }
+    .table-card { margin-bottom: var(--space-6); }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+    thead th {
+      text-align: left; font-size: var(--text-xs); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-muted); padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    tbody tr { transition: background var(--transition); }
+    tbody tr:hover { background: var(--surface-offset); }
+    tbody td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    .user-cell { display: flex; align-items: center; gap: var(--space-3); }
+    .user-cell .avatar { width: 28px; height: 28px; font-size: 10px; }
+    .status-pill {
+      display: inline-flex; align-items: center; padding: 2px 8px;
+      border-radius: 99px; font-size: 11px; font-weight: 500; white-space: nowrap;
+    }
+    .pill-success { background: rgba(67,122,34,0.12); color: var(--success); }
+    .pill-warning { background: rgba(209,153,0,0.12); color: var(--warning); }
+    .pill-error { background: rgba(161,44,123,0.1); color: var(--error); }
+    .pill-neutral { background: var(--surface-offset); color: var(--text-muted); }
+    .text-muted { color: var(--text-muted); }
+    .text-right { text-align: right; }
+    .font-mono { font-variant-numeric: tabular-nums; }
+    @media (max-width: 768px) {
+      .sidebar { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 240px; }
+      .sidebar.open { display: flex; }
+      .mobile-menu-btn { display: flex; }
+      .charts-row { grid-template-columns: 1fr; }
+      .content { padding: var(--space-4); }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) { .kpi-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef } = React;
-
-const KPI_DATA = [
-  { label:'Total Sessions', value:'148,392', change:12.4, up:true, icon:'sessions', color:'#4f98a3', bg:'rgba(79,152,163,0.12)' },
-  { label:'Revenue', value:'$84,210', change:8.7, up:true, icon:'revenue', color:'#6daa45', bg:'rgba(109,170,69,0.12)' },
-  { label:'Conversion Rate', value:'3.82%', change:0.4, up:true, icon:'conversion', color:'#fdab43', bg:'rgba(253,171,67,0.12)' },
-  { label:'Bounce Rate', value:'42.1%', change:2.1, up:false, icon:'bounce', color:'#d163a7', bg:'rgba(209,99,167,0.12)' },
-];
-const CHART_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const SESSIONS_DATA = [82000,95000,88000,110000,104000,132000,128000,143000,138000,162000,155000,148392];
-const REVENUE_DATA  = [41000,52000,48000,61000,58000,72000,69000,80000,76000,91000,87000,84210];
-const TRAFFIC_SOURCES = [
-  { label:'Organic Search', value:42, color:'#4f98a3' },
-  { label:'Direct', value:26, color:'#6daa45' },
-  { label:'Social Media', value:18, color:'#fdab43' },
-  { label:'Referral', value:14, color:'#d163a7' },
-];
-const USERS = [
-  { name:'Amira Hassan', email:'amira@example.com', color:'#4f98a3', page:'/pricing', sessions:412, revenue:'$1,240', status:'paid', country:'🇺🇸' },
-  { name:'Carlos Mendez', email:'carlos@example.com', color:'#6daa45', page:'/features', sessions:287, revenue:'$890', status:'trial', country:'🇲🇽' },
-  { name:'Lena Hoffmann', email:'lena@example.com', color:'#fdab43', page:'/dashboard', sessions:539, revenue:'$2,100', status:'paid', country:'🇩🇪' },
-  { name:'Yuki Tanaka', email:'yuki@example.com', color:'#d163a7', page:'/docs', sessions:198, revenue:'—', status:'free', country:'🇯🇵' },
-  { name:'Mirza Causevic', email:'miz@example.com', color:'#5591c7', page:'/settings', sessions:731, revenue:'$3,420', status:'paid', country:'🇧🇦' },
-  { name:'Priya Nair', email:'priya@example.com', color:'#a86fdf', page:'/onboarding', sessions:154, revenue:'$480', status:'trial', country:'🇮🇳' },
-];
-const ACTIVITY = [
-  { icon:'💳', bg:'rgba(79,152,163,0.15)', text:'New subscription from Mirza Causevic — Pro plan', time:'2 min ago' },
-  { icon:'🚀', bg:'rgba(109,170,69,0.15)', text:'Deploy v2.4.1 completed successfully', time:'14 min ago' },
-  { icon:'👤', bg:'rgba(85,145,199,0.15)', text:'New user signed up: Priya Nair', time:'32 min ago' },
-  { icon:'⚠️', bg:'rgba(253,171,67,0.15)', text:'API latency spike on /auth/token', time:'1h ago' },
-  { icon:'✅', bg:'rgba(109,170,69,0.15)', text:'Q2 Analytics report generated', time:'2h ago' },
-  { icon:'🔐', bg:'rgba(209,99,167,0.15)', text:'Failed login attempt from IP 192.168.4.x', time:'3h ago' },
-];
-const TOP_PAGES = [
-  { name:'Home', url:'/', visits:'38.4k', pct:100 },
-  { name:'Pricing', url:'/pricing', visits:'24.1k', pct:63 },
-  { name:'Features', url:'/features', visits:'18.7k', pct:49 },
-  { name:'Dashboard', url:'/dashboard', visits:'14.2k', pct:37 },
-  { name:'Documentation', url:'/docs', visits:'9.8k', pct:26 },
-  { name:'Blog', url:'/blog', visits:'6.3k', pct:16 },
-];
-const NAV = [
-  { id:'dashboard', label:'Dashboard', icon:'grid' },
-  { id:'analytics', label:'Analytics', icon:'chart' },
-  { id:'users', label:'Users', icon:'users' },
-  { id:'revenue', label:'Revenue', icon:'dollar' },
-  { id:'settings', label:'Settings', icon:'settings' },
-];
-
-const Icon = ({ name, size=16 }) => {
-  const s = { width:size, height:size, strokeWidth:1.75, fill:'none', stroke:'currentColor', strokeLinecap:'round', strokeLinejoin:'round' };
-  const icons = {
-    grid:     <svg viewBox="0 0 24 24" style={s}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
-    chart:    <svg viewBox="0 0 24 24" style={s}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
-    users:    <svg viewBox="0 0 24 24" style={s}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-    dollar:   <svg viewBox="0 0 24 24" style={s}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-    settings: <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
-    search:   <svg viewBox="0 0 24 24" style={s}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
-    bell:     <svg viewBox="0 0 24 24" style={s}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
-    sun:      <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>,
-    moon:     <svg viewBox="0 0 24 24" style={s}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
-    download: <svg viewBox="0 0 24 24" style={s}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
-    up:       <svg viewBox="0 0 24 24" style={{...s,width:12,height:12}}><polyline points="18 15 12 9 6 15"/></svg>,
-    dn:       <svg viewBox="0 0 24 24" style={{...s,width:12,height:12}}><polyline points="6 9 12 15 18 9"/></svg>,
-    sessions: <svg viewBox="0 0 24 24" style={{...s,width:16,height:16}}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-    revenue:  <svg viewBox="0 0 24 24" style={{...s,width:16,height:16}}><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-    conversion:<svg viewBox="0 0 24 24" style={{...s,width:16,height:16}}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
-    bounce:   <svg viewBox="0 0 24 24" style={{...s,width:16,height:16}}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
-  };
-  return icons[name] || null;
-};
-
-const LogoMark = () => (
-  <svg className="logo-mark" viewBox="0 0 32 32" fill="none" aria-label="MizDash">
-    <rect width="32" height="32" rx="8" fill="var(--primary)"/>
-    <path d="M7 22V10l5 6 4-8 4 8 5-6v12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    <circle cx="16" cy="16" r="2" fill="white"/>
-  </svg>
-);
-
-const LineChart = ({ theme }) => {
-  const ref = useRef(null);
-  const chartRef = useRef(null);
-  useEffect(() => {
-    if (chartRef.current) { chartRef.current.destroy(); chartRef.current = null; }
-    const isDark = theme === 'dark';
-    const grid = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
-    const tc = isDark ? '#888896' : '#7a7974';
-    chartRef.current = new Chart(ref.current, {
-      type:'line',
-      data:{
-        labels:CHART_MONTHS,
-        datasets:[
-          {label:'Sessions',data:SESSIONS_DATA,borderColor:'#4f98a3',backgroundColor:'rgba(79,152,163,0.08)',tension:0.4,fill:true,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y'},
-          {label:'Revenue',data:REVENUE_DATA,borderColor:'#6daa45',backgroundColor:'rgba(109,170,69,0.08)',tension:0.4,fill:true,pointRadius:0,pointHoverRadius:5,borderWidth:2,yAxisID:'y1'},
-        ]
-      },
-      options:{
-        responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{legend:{display:true,position:'top',align:'end',labels:{usePointStyle:true,pointStyle:'circle',padding:16,color:tc,font:{family:'Inter',size:12}}},tooltip:{backgroundColor:isDark?'#1c1c22':'#fff',titleColor:isDark?'#e8e8f0':'#28251d',bodyColor:tc,borderColor:isDark?'#2a2a33':'#dcd9d5',borderWidth:1,padding:10}},
-        scales:{
-          x:{grid:{color:grid},ticks:{color:tc,font:{family:'Inter',size:11}},border:{display:false}},
-          y:{position:'left',grid:{color:grid},ticks:{color:tc,font:{family:'Inter',size:11},callback:v=>v>=1000?`${(v/1000).toFixed(0)}k`:v},border:{display:false}},
-          y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:tc,font:{family:'Inter',size:11},callback:v=>`$${v>=1000?`${(v/1000).toFixed(0)}k`:v}`},border:{display:false}}
-        }
-      }
-    });
-    return () => { if(chartRef.current){chartRef.current.destroy();chartRef.current=null;} };
-  }, [theme]);
-  return <canvas ref={ref}/>;
-};
-
-const DonutChart = ({ theme }) => {
-  const ref = useRef(null);
-  const chartRef = useRef(null);
-  useEffect(() => {
-    if (chartRef.current) { chartRef.current.destroy(); chartRef.current=null; }
-    const isDark = theme === 'dark';
-    chartRef.current = new Chart(ref.current, {
-      type:'doughnut',
-      data:{labels:TRAFFIC_SOURCES.map(s=>s.label),datasets:[{data:TRAFFIC_SOURCES.map(s=>s.value),backgroundColor:TRAFFIC_SOURCES.map(s=>s.color),borderWidth:0,hoverOffset:6}]},
-      options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},tooltip:{backgroundColor:isDark?'#1c1c22':'#fff',titleColor:isDark?'#e8e8f0':'#28251d',bodyColor:isDark?'#888896':'#7a7974',borderColor:isDark?'#2a2a33':'#dcd9d5',borderWidth:1,callbacks:{label:c=>` ${c.label}: ${c.raw}%`}}}}
-    });
-    return () => { if(chartRef.current){chartRef.current.destroy();chartRef.current=null;} };
-  }, [theme]);
-  return <canvas ref={ref}/>;
-};
-
-const Pill = ({s}) => {
-  const map = {paid:['pill-success','✓ Paid'],trial:['pill-warning','⏳ Trial'],free:['pill-info','Free']};
-  const [cls,label] = map[s]||['pill-info',s];
-  return <span className={`status-pill ${cls}`}>{label}</span>;
-};
-
-const App = () => {
-  const [theme, setTheme] = useState('dark');
-  const [activeNav, setActiveNav] = useState('dashboard');
-  const [dateRange, setDateRange] = useState('30d');
-  useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
-
-  return (
-    <div className="app">
-      <aside className="sidebar">
-        <div className="sidebar-logo"><LogoMark/><span className="logo-text">Miz<span>Dash</span></span></div>
-        <span className="nav-section">Main</span>
-        {NAV.slice(0,3).map(n=>(
-          <div key={n.id} className={`nav-item${activeNav===n.id?' active':''}`} onClick={()=>setActiveNav(n.id)} role="button" tabIndex={0} onKeyDown={e=>e.key==='Enter'&&setActiveNav(n.id)}>
-            <Icon name={n.icon} size={16}/>{n.label}
-          </div>
-        ))}
-        <span className="nav-section">Finance</span>
-        <div className={`nav-item${activeNav==='revenue'?' active':''}`} onClick={()=>setActiveNav('revenue')} role="button" tabIndex={0}><Icon name="dollar" size={16}/>Revenue</div>
-        <span className="nav-section">System</span>
-        <div className={`nav-item${activeNav==='settings'?' active':''}`} onClick={()=>setActiveNav('settings')} role="button" tabIndex={0}><Icon name="settings" size={16}/>Settings</div>
-        <div className="sidebar-bottom">
-          <div className="nav-item" style={{gap:'0.6rem'}}>
-            <div className="avatar" style={{width:26,height:26,fontSize:'0.65rem'}}>MC</div>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:'0.82rem',fontWeight:600,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>Mirza Causevic</div>
-              <div style={{fontSize:'0.72rem',color:'var(--faint)'}}>Director of Tech</div>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      <header className="header">
-        <div className="header-left">
-          <div className="mobile-logo"><LogoMark/><span style={{fontFamily:"'Space Grotesk',sans-serif",fontWeight:700}}>Miz<span style={{color:'var(--primary)'}}>Dash</span></span></div>
-          <div className="search-bar"><Icon name="search" size={14}/><input type="text" placeholder="Search..." aria-label="Search"/></div>
-        </div>
-        <div className="header-right">
-          <div className="tooltip-wrap">
-            <button className="icon-btn badge" aria-label="Notifications"><Icon name="bell" size={16}/></button>
-            <span className="tooltip">3 new alerts</span>
-          </div>
-          <div className="tooltip-wrap">
-            <button className="icon-btn" onClick={()=>setTheme(t=>t==='dark'?'light':'dark')} aria-label="Toggle theme">
-              {theme==='dark'?<Icon name="sun" size={16}/>:<Icon name="moon" size={16}/>}
-            </button>
-            <span className="tooltip">{theme==='dark'?'Light mode':'Dark mode'}</span>
-          </div>
-          <div className="tooltip-wrap"><div className="avatar">MC</div><span className="tooltip">Mirza Causevic</span></div>
-        </div>
-      </header>
-
-      <main className="main">
-        <div className="page-header">
-          <div>
-            <h1 className="page-title">Analytics Overview</h1>
-            <p className="page-subtitle">Welcome back, Mirza. Here's what's happening today.</p>
-          </div>
-          <div style={{display:'flex',gap:'0.5rem',alignItems:'center',flexWrap:'wrap'}}>
-            <div className="date-tabs">
-              {['7d','30d','90d','1y'].map(d=>(
-                <button key={d} className={`date-tab${dateRange===d?' active':''}`} onClick={()=>setDateRange(d)}>{d}</button>
-              ))}
-            </div>
-            <button className="btn btn-primary"><Icon name="download" size={14}/>Export</button>
-          </div>
-        </div>
-
-        <div className="kpi-grid">
-          {KPI_DATA.map((k,i)=>(
-            <div className="kpi-card" key={i}>
-              <div className="kpi-header">
-                <span className="kpi-label">{k.label}</span>
-                <div className="kpi-icon" style={{background:k.bg,color:k.color}}><Icon name={k.icon} size={16}/></div>
-              </div>
-              <div className="kpi-value">{k.value}</div>
-              <div className="kpi-footer">
-                <span className={`trend ${k.up?'up':'down'}`}><Icon name={k.up?'up':'dn'} size={12}/>{k.change}{k.suffix}</span>
-                <span className="trend-label">vs last month</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="charts-grid">
-          <div className="card">
-            <div className="card-header"><div><div className="card-title">Sessions & Revenue</div><div className="card-subtitle">12-month performance</div></div></div>
-            <div className="chart-wrap"><LineChart theme={theme}/></div>
-          </div>
-          <div className="card">
-            <div className="card-header"><div><div className="card-title">Traffic Sources</div><div className="card-subtitle">Last 30 days</div></div></div>
-            <div className="chart-wrap" style={{height:'160px'}}><DonutChart theme={theme}/></div>
-            <div className="donut-legend">
-              {TRAFFIC_SOURCES.map((s,i)=>(
-                <div className="legend-item" key={i}>
-                  <div className="legend-left"><div className="legend-dot" style={{background:s.color}}/>{s.label}</div>
-                  <span className="legend-val">{s.value}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="card">
-          <div className="card-header">
-            <div><div className="card-title">Top Users</div><div className="card-subtitle">Sorted by session count</div></div>
-            <button className="btn btn-ghost">View all</button>
-          </div>
-          <div className="table-wrap">
-            <table>
-              <thead><tr><th>User</th><th>Last Page</th><th>Sessions</th><th>Revenue</th><th>Status</th></tr></thead>
-              <tbody>
-                {USERS.map((u,i)=>(
-                  <tr key={i}>
-                    <td><div className="user-cell"><div className="user-av" style={{background:u.color}}>{u.name.split(' ').map(n=>n[0]).join('')}</div><div><div style={{fontWeight:500}}>{u.name} {u.country}</div><div className="td-muted" style={{fontSize:'0.75rem'}}>{u.email}</div></div></div></td>
-                    <td className="td-muted" style={{fontFamily:'monospace',fontSize:'0.82rem'}}>{u.page}</td>
-                    <td style={{fontFamily:"'Space Grotesk',sans-serif",fontWeight:600}}>{u.sessions.toLocaleString()}</td>
-                    <td style={{fontFamily:"'Space Grotesk',sans-serif",fontWeight:600}}>{u.revenue}</td>
-                    <td><Pill s={u.status}/></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="bottom-grid">
-          <div className="card">
-            <div className="card-header"><div className="card-title">Recent Activity</div></div>
-            <div className="activity-list">
-              {ACTIVITY.map((a,i)=>(
-                <div className="activity-item" key={i}>
-                  <div className="activity-icon" style={{background:a.bg}}>{a.icon}</div>
-                  <div className="activity-body">
-                    <div className="activity-text">{a.text}</div>
-                    <div className="activity-time">{a.time}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="card">
-            <div className="card-header"><div><div className="card-title">Top Pages</div><div className="card-subtitle">By unique visits</div></div></div>
-            <div className="top-pages">
-              {TOP_PAGES.map((p,i)=>(
-                <div className="page-row" key={i}>
-                  <span className="page-rank">{i+1}</span>
-                  <div className="page-info"><div className="page-name">{p.name}</div><div className="page-url">{p.url}</div></div>
-                  <div className="page-bar-wrap"><div className="page-bar-bg"><div className="page-bar-fill" style={{width:`${p.pct}%`}}/></div></div>
-                  <span className="page-visits">{p.visits}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </main>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     </div>
-  );
+    <div><div class="logo-name">MizMetrics</div><div class="logo-sub">Analytics Platform</div></div>
+  </div>
+  <nav class="nav-section">
+    <div class="nav-label">Main</div>
+    <div class="nav-item active" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Analytics <span class="badge">New</span>
+    </div>
+    <div class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Users
+    </div>
+    <div class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Reports
+    </div>
+  </nav>
+  <nav class="nav-section">
+    <div class="nav-label">Settings</div>
+    <div class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      Integrations
+    </div>
+    <div class="nav-item" onclick="setActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      Settings
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="avatar">MC</div>
+      <div><div class="user-name">Mirza C.</div><div class="user-role">Director of Tech</div></div>
+    </div>
+  </div>
+</aside>
+<div class="main">
+  <header class="topbar">
+    <button class="icon-btn mobile-menu-btn" aria-label="Menu" onclick="document.getElementById('sidebar').classList.toggle('open')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search anything..." aria-label="Search" />
+    </div>
+    <div class="topbar-actions">
+      <div class="notif-wrap">
+        <button class="icon-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <span class="notif-dot"></span>
+      </div>
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+  <main class="content">
+    <div class="page-header">
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-sub">Welcome back, Mirza — here's what's happening today.</p>
+    </div>
+    <div class="kpi-grid" id="kpi-grid"></div>
+    <div class="charts-row">
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">Revenue Over Time</div><div class="card-sub">Monthly performance — last 12 months</div></div></div>
+        <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">Traffic Sources</div><div class="card-sub">Current period</div></div></div>
+        <div class="donut-wrap"><canvas id="donutChart"></canvas></div>
+        <div class="legend" id="donut-legend"></div>
+      </div>
+    </div>
+    <div class="card table-card">
+      <div class="card-header"><div><div class="card-title">Recent Transactions</div><div class="card-sub">Last 7 days</div></div></div>
+      <div class="table-scroll"><table><thead><tr><th>Customer</th><th>Plan</th><th>Date</th><th>Status</th><th class="text-right">Amount</th></tr></thead><tbody id="table-body"></tbody></table></div>
+    </div>
+  </main>
+</div>
+<script>
+const html = document.documentElement;
+let theme = 'dark';
+function toggleTheme() {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', theme);
+  document.getElementById('theme-toggle').innerHTML = theme === 'dark'
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+  updateCharts();
+}
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+}
+const kpis = [
+  { label: 'Total Revenue', value: '$94,230', trend: '+12.4%', up: true, icon: 'dollar', cls: 'teal' },
+  { label: 'Active Users', value: '8,471', trend: '+5.2%', up: true, icon: 'users', cls: 'green' },
+  { label: 'Conversion Rate', value: '3.68%', trend: '-0.3%', up: false, icon: 'target', cls: 'blue' },
+  { label: 'Avg. Session', value: '4m 12s', trend: '+0.8%', up: true, icon: 'clock', cls: 'gold' }
+];
+const icons = {
+  dollar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  target: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`
 };
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App/>);
+const arrowUp = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`;
+const arrowDown = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`;
+document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
+  <div class="kpi-card">
+    <div class="kpi-header"><span class="kpi-label">${k.label}</span><div class="kpi-icon ${k.cls}">${icons[k.icon]}</div></div>
+    <div class="kpi-value">${k.value}</div>
+    <div class="kpi-trend ${k.up ? 'trend-up' : 'trend-down'}">${k.up ? arrowUp : arrowDown} ${k.trend} vs last month</div>
+  </div>`).join('');
+const transactions = [
+  { name: 'Sara M.', initials: 'SM', plan: 'Enterprise', date: 'May 6, 2026', status: 'Paid', amount: '$2,400' },
+  { name: 'James K.', initials: 'JK', plan: 'Pro', date: 'May 5, 2026', status: 'Paid', amount: '$149' },
+  { name: 'Leila T.', initials: 'LT', plan: 'Starter', date: 'May 5, 2026', status: 'Pending', amount: '$49' },
+  { name: 'Omar D.', initials: 'OD', plan: 'Enterprise', date: 'May 4, 2026', status: 'Paid', amount: '$2,400' },
+  { name: 'Nina R.', initials: 'NR', plan: 'Pro', date: 'May 4, 2026', status: 'Failed', amount: '$149' },
+  { name: 'Tomas B.', initials: 'TB', plan: 'Pro', date: 'May 3, 2026', status: 'Paid', amount: '$149' },
+  { name: 'Aisha F.', initials: 'AF', plan: 'Starter', date: 'May 2, 2026', status: 'Refunded', amount: '$49' },
+];
+const pillClass = { Paid: 'pill-success', Pending: 'pill-warning', Failed: 'pill-error', Refunded: 'pill-neutral' };
+document.getElementById('table-body').innerHTML = transactions.map(t => `
+  <tr>
+    <td><div class="user-cell"><div class="avatar">${t.initials}</div>${t.name}</div></td>
+    <td>${t.plan}</td><td class="text-muted">${t.date}</td>
+    <td><span class="status-pill ${pillClass[t.status]}">${t.status}</span></td>
+    <td class="text-right font-mono">${t.amount}</td>
+  </tr>`).join('');
+const months = ['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'];
+const revenueData = [48200,51400,47800,55300,60100,58700,63200,67400,72100,78300,85600,94230];
+function getCSSVar(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+let lineChart, donutChart;
+function buildCharts() {
+  const textMuted = getCSSVar('--text-muted');
+  const border = getCSSVar('--border');
+  const surface = getCSSVar('--surface');
+  const primary = getCSSVar('--primary');
+  const success = getCSSVar('--success');
+  const warning = getCSSVar('--warning');
+  const blue = theme === 'dark' ? '#5591c7' : '#006494';
+  const purple = theme === 'dark' ? '#a86fdf' : '#7a39bb';
+  Chart.defaults.color = textMuted;
+  Chart.defaults.font.family = "'Inter', sans-serif";
+  Chart.defaults.font.size = 11;
+  if (lineChart) lineChart.destroy();
+  if (donutChart) donutChart.destroy();
+  const lineCtx = document.getElementById('lineChart').getContext('2d');
+  const grad = lineCtx.createLinearGradient(0, 0, 0, 220);
+  grad.addColorStop(0, primary + '33');
+  grad.addColorStop(1, primary + '00');
+  lineChart = new Chart(lineCtx, {
+    type: 'line',
+    data: { labels: months, datasets: [{ data: revenueData, borderColor: primary, backgroundColor: grad, fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: primary, pointBorderColor: surface, pointBorderWidth: 2, borderWidth: 2 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { backgroundColor: surface, titleColor: getCSSVar('--text'), bodyColor: textMuted, borderColor: border, borderWidth: 1, padding: 10, callbacks: { label: ctx => ' $' + ctx.raw.toLocaleString() } } },
+      scales: { x: { grid: { color: border }, ticks: { color: textMuted } }, y: { grid: { color: border }, ticks: { color: textMuted, callback: v => '$' + (v/1000).toFixed(0) + 'k' } } }
+    }
+  });
+  const sources = [
+    { label: 'Organic Search', value: 42, color: primary },
+    { label: 'Direct', value: 24, color: success },
+    { label: 'Paid Ads', value: 18, color: warning },
+    { label: 'Referral', value: 10, color: blue },
+    { label: 'Social', value: 6, color: purple },
+  ];
+  const donutCtx = document.getElementById('donutChart').getContext('2d');
+  donutChart = new Chart(donutCtx, {
+    type: 'doughnut',
+    data: { labels: sources.map(s => s.label), datasets: [{ data: sources.map(s => s.value), backgroundColor: sources.map(s => s.color), borderWidth: 0, hoverOffset: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false }, tooltip: { backgroundColor: surface, titleColor: getCSSVar('--text'), bodyColor: textMuted, borderColor: border, borderWidth: 1, padding: 10, callbacks: { label: ctx => ' ' + ctx.raw + '%' } } } }
+  });
+  document.getElementById('donut-legend').innerHTML = sources.map(s => `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span>${s.label}</span><span style="margin-left:auto;font-variant-numeric:tabular-nums;color:var(--text-muted)">${s.value}%</span></div>`).join('');
+}
+function updateCharts() { setTimeout(buildCharts, 50); }
+buildCharts();
 </script>
 </body>
 </html>
