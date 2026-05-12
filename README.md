@@ -1,27 +1,29 @@
-# 📊 MovieMetrics — React Dashboard UI
+# Miz React Dashboard
 
-> A production-quality analytics dashboard built with **React (CDN)**, **Chart.js**, and vanilla CSS — no build tools required. Demonstrates component thinking, state management, responsive layout, and data visualization.
+Polished React-style dashboard showcase for **KPI storytelling, chart composition, responsive layout, and product-minded frontend craft**.
+
+> **What this repo proves**
+>
+> Good dashboard UI is not a pile of widgets. It is hierarchy, rhythm, readability, and business context working together on one screen.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=flat-square&logo=vercel)](https://miz-react-dashboard.vercel.app)
 [![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)]()
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)]()
 [![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=chartdotjs&logoColor=white)]()
 
----
+## âœ¨ Features
 
-## ✨ Features
-
-- 🌙 **Dark / Light mode** — theme toggle with Chart.js re-render on switch
-- 📈 **KPI Cards** — Revenue, Users, Conversion Rate, Avg. Session with trend indicators
-- 📊 **Line Chart** — 12-month revenue trend with gradient fill (Chart.js)
-- 🍩 **Donut Chart** — Traffic sources breakdown with custom legend
-- 🧾 **Transactions Table** — Status pills (Paid, Pending, Failed, Refunded), tabular-nums
-- 🗂 **Sidebar Navigation** — Active state, badge indicator, user profile footer
-- 📱 **Fully Responsive** — Mobile hamburger menu, fluid grid, stacked charts
+- ðŸŒ™ **Dark / Light mode** â€” theme toggle with Chart.js re-render on switch
+- ðŸ“ˆ **KPI Cards** â€” Revenue, Users, Conversion Rate, Avg. Session with trend indicators
+- ðŸ“Š **Line Chart** â€” 12-month revenue trend with gradient fill (Chart.js)
+- ðŸ© **Donut Chart** â€” Traffic sources breakdown with custom legend
+- ðŸ§¾ **Transactions Table** â€” Status pills (Paid, Pending, Failed, Refunded), tabular-nums
+- ðŸ—‚ **Sidebar Navigation** â€” Active state, badge indicator, user profile footer
+- ðŸ“± **Fully Responsive** â€” Mobile hamburger menu, fluid grid, stacked charts
 
 ---
 
-## 🛠 Tech Stack
+## ðŸ›  Tech Stack
 
 | Technology | Usage |
 |---|---|
@@ -33,52 +35,52 @@
 
 ---
 
-## 🚀 Getting Started
+## ðŸš€ Getting Started
 
 ```bash
 # Clone
 git clone https://github.com/mizcausevic-dev/miz-react-dashboard.git
 cd miz-react-dashboard
 
-# Open — no build step needed
+# Open â€” no build step needed
 open dashboard-ui.html
 ```
 
 ---
 
-## 💡 React Concepts Demonstrated
+## ðŸ’¡ React Concepts Demonstrated
 
-- **Component-based thinking** — KPI cards, nav items, table rows as reusable render functions
-- **State management** — theme state toggled globally, chart instances managed with destroy/rebuild lifecycle
-- **Conditional rendering** — trend arrows, pill colors, icon variants
-- **Props pattern** — data arrays drive UI rendering (no hardcoded HTML)
-- **Side effects** — chart rebuild triggered by theme state change (mirrors `useEffect`)
+- **Component-based thinking** â€” KPI cards, nav items, table rows as reusable render functions
+- **State management** â€” theme state toggled globally, chart instances managed with destroy/rebuild lifecycle
+- **Conditional rendering** â€” trend arrows, pill colors, icon variants
+- **Props pattern** â€” data arrays drive UI rendering (no hardcoded HTML)
+- **Side effects** â€” chart rebuild triggered by theme state change (mirrors `useEffect`)
 
 ---
 
-## ☁️ Deploy to Vercel
+## â˜ï¸ Deploy to Vercel
 
 1. Go to [vercel.com/new](https://vercel.com/new)
 2. Import `mizcausevic-dev/miz-react-dashboard`
 3. Framework: **Other**
 4. Root directory: `/`
-5. Hit **Deploy** — live in ~60 seconds
+5. Hit **Deploy** â€” live in ~60 seconds
 
 ---
 
-## 📁 Project Structure
+## ðŸ“ Project Structure
 
 ```
 miz-react-dashboard/
-├── dashboard-ui.html    # Full dashboard — single file, zero dependencies
-└── README.md
+â”œâ”€â”€ dashboard-ui.html    # Full dashboard â€” single file, zero dependencies
+â””â”€â”€ README.md
 ```
 
 ---
 
-## 👤 Author
+## ðŸ‘¤ Author
 
-**Mirza Causevic** — Director of Tech, Web Engineering & DevOps
+**Mirza Causevic** â€” Director of Tech, Web Engineering & DevOps
 
 [![GitHub](https://img.shields.io/badge/GitHub-mizcausevic--dev-181717?style=flat-square&logo=github)](https://github.com/mizcausevic-dev)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Mirza%20Causevic-0077B5?style=flat-square&logo=linkedin)](https://linkedin.com/in/mirzacausevic)
