@@ -11,15 +11,15 @@ Polished React-style dashboard showcase for **KPI storytelling, chart compositio
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)]()
 [![Chart.js](https://img.shields.io/badge/Chart.js-FF6384?style=flat-square&logo=chartdotjs&logoColor=white)]()
 
-## âœ¨ Features
+## Features
 
-- ðŸŒ™ **Dark / Light mode** â€” theme toggle with Chart.js re-render on switch
-- ðŸ“ˆ **KPI Cards** â€” Revenue, Users, Conversion Rate, Avg. Session with trend indicators
-- ðŸ“Š **Line Chart** â€” 12-month revenue trend with gradient fill (Chart.js)
-- ðŸ© **Donut Chart** â€” Traffic sources breakdown with custom legend
-- ðŸ§¾ **Transactions Table** â€” Status pills (Paid, Pending, Failed, Refunded), tabular-nums
-- ðŸ—‚ **Sidebar Navigation** â€” Active state, badge indicator, user profile footer
-- ðŸ“± **Fully Responsive** â€” Mobile hamburger menu, fluid grid, stacked charts
+- **Dark / light mode** with Chart.js re-render on theme switch
+- **KPI cards** for revenue, users, conversion rate, and average session depth
+- **Line chart** for 12-month revenue trend with gradient fill
+- **Donut chart** for traffic-source mix with custom legend
+- **Transactions table** with status pills and tabular numeric layout
+- **Sidebar navigation** with active state, badge indicator, and profile footer
+- **Responsive layout** with fluid grid, mobile menu, and stacked chart behavior
 
 ---
 
@@ -86,4 +86,3 @@ miz-react-dashboard/
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Mirza%20Causevic-0077B5?style=flat-square&logo=linkedin)](https://linkedin.com/in/mirzacausevic)
 
 ---
-
